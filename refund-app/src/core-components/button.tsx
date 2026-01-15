@@ -5,7 +5,7 @@ export const buttonVariants = cva(
   `
     flex items-center justify-center cursor-pointer
     transition rounded-lg
-    w-full uppercase
+    w-full text-sm font-bold
     bg-green-100 hover:bg-green-200
   `,
   {

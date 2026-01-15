@@ -1,11 +1,11 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
 export const navLinkVariants = cva(
-  "text-base transition-colors cursor-pointer",
+  "text-sm transition-colors cursor-pointer font-semibold",
   {
     variants: {
       active: {
-        true: "text-green-100 ",
+        true: "text-green-100",
         false: "text-gray-200 hover:text-green-100",
       },
     },

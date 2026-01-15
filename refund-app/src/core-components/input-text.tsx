@@ -6,7 +6,7 @@ export const inputTextVariants = cva(
   {
     variants: {
       size: {
-        md: "text-base",
+        md: "text-sm",
       },
     },
     defaultVariants: {

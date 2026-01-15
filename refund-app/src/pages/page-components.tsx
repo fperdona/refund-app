@@ -39,10 +39,10 @@ export default function Components() {
         </div>
       </div>
 
-      <div className="w-80 flex flex-col gap-2">
+      <div className="w-full max-w-80 flex flex-col gap-2">
         <Text className="text-sm font-bold">Botões: </Text>
-        <Button>Agendar</Button>
-        <Button disabled>Agendar</Button>
+        <Button>Label</Button>
+        <Button disabled>Label</Button>
       </div>
 
       <div className="flex flex-col gap-2">
@@ -50,7 +50,7 @@ export default function Components() {
         <ButtonIcon icon={MagnifyingGlass} />
         <ButtonIcon icon={MagnifyingGlass} disabled />
       </div>
-      <div className="w-80 flex flex-col gap-2">
+      <div className="w-full max-w-80 flex flex-col gap-2">
         <Text className="text-sm font-bold">SelectField: </Text>
         <SelectField
           label="CATEGORIA"
@@ -64,7 +64,7 @@ export default function Components() {
           ]}
         />
       </div>
-      <div className="w-80 flex flex-col gap-2">
+      <div className="w-full max-w-80 flex flex-col gap-2">
         <Text className="text-sm font-bold">Inputs: </Text>
         <InputText placeholder="Helena Souza" label="Título" />
       </div>
