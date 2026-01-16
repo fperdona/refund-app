@@ -29,5 +29,6 @@ export function useRefunds(page = 1, search = "") {
       });
       return response.data.refunds;
     },
+    placeholderData: (previousData) => previousData,
   });
 }

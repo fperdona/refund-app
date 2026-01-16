@@ -4,6 +4,7 @@ import { useRefunds } from "../hooks/use-refunds";
 import RefundItem from "../components/refund-item";
 import Pagination from "../components/paginations";
 import RefundsSearch from "../components/refunds-search";
+import RefundItemSkeleton from "../components/refund-item-skeleton";
 
 export default function Solicitacoes() {
   const [search] = useQueryState("q", { defaultValue: "" });
@@ -15,11 +16,12 @@ export default function Solicitacoes() {
       <h1 className="text-xl font-bold text-gray-200 mb-6">Solicitações</h1>
 
       <RefundsSearch />
-
-      {/* Lista */}
+      {/* Loading */}
       {isLoading && (
-        <div className="text-gray-200 flex justify-center border-t border-gray-400 py-5">
-          Carregando...
+        <div className="border-t border-gray-400 pt-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <RefundItemSkeleton key={i} />
+          ))}
         </div>
       )}
 

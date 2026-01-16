@@ -6,8 +6,9 @@ import MagnifyingGlass from "../assets/icons/magnifying-glass.svg?react";
 import { debounce } from "../helpers/utils";
 
 export default function RefundsSearch() {
-  const [, setSearch] = useQueryState("q", { defaultValue: "" });
-  const [inputValue, setInputValue] = useState("");
+  const [search, setSearch] = useQueryState("q", { defaultValue: "" });
+
+  const [inputValue, setInputValue] = useState(search);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetSearch = useCallback(
@@ -18,7 +19,10 @@ export default function RefundsSearch() {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setInputValue(value);
-    debouncedSetSearch(value);
+
+    if (value.length >= 3 || value.length === 0) {
+      debouncedSetSearch(value);
+    }
   }
 
   return (
