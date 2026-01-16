@@ -1,19 +1,54 @@
-import InputText from "../core-components/input-text";
-import ButtonIcon from "../core-components/button-icon";
-import MagnifyingGlass from "../assets/icons/magnifying-glass.svg?react";
+import { useQueryState } from "nuqs";
+import { useState } from "react";
+import { useRefunds } from "../hooks/use-refunds";
+import RefundItem from "../components/refund-item";
+import Pagination from "../components/paginations";
+import RefundsSearch from "../components/refunds-search";
 
 export default function Solicitacoes() {
+  const [search] = useQueryState("q", { defaultValue: "" });
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useRefunds(page, search);
+
   return (
     <div className="bg-white rounded-2xl p-8">
       <h1 className="text-xl font-bold text-gray-200 mb-6">Solicitações</h1>
 
-      {/* Busca */}
-      <div className="flex gap-2 mb-6">
-        <div className="flex-1">
-          <InputText placeholder="Pesquisar pelo nome" />
+      <RefundsSearch />
+
+      {/* Lista */}
+      {isLoading && (
+        <div className="text-gray-200 flex justify-center border-t border-gray-400 py-5">
+          Carregando...
         </div>
-        <ButtonIcon icon={MagnifyingGlass} />
-      </div>
+      )}
+
+      {data && data.data.length === 0 && (
+        <div className="text-gray-200 flex justify-center border-t border-gray-400 py-5">
+          Nenhuma solicitação encontrada.
+        </div>
+      )}
+
+      {data && data.data.length > 0 && (
+        <>
+          <div className="border-t border-gray-400 pt-5">
+            {data.data.map((refund) => (
+              <RefundItem
+                key={refund.id}
+                title={refund.title}
+                category={refund.category}
+                value={refund.value}
+              />
+            ))}
+          </div>
+
+          <Pagination
+            currentPage={data.meta.currentPage}
+            lastPage={data.meta.lastPage}
+            onPageChange={setPage}
+          />
+        </>
+      )}
     </div>
   );
 }
