@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import { Toaster } from "sonner";
 import Header from "../components/header";
 
 export default function LayoutMain() {
@@ -10,6 +11,7 @@ export default function LayoutMain() {
           <Outlet />
         </div>
       </main>
+      <Toaster position="bottom-right" />
     </>
   );
 }

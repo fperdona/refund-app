@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { useParams } from "react-router";
 import { useRefund } from "../hooks/use-refund";
+import { api } from "../services/api";
 import InputText from "../core-components/input-text";
 import SelectField from "../core-components/select-field";
 import Button from "../core-components/button";
+import ConfirmModal from "../components/confirm-modal";
 import MagnifyingGlass from "../assets/icons/magnifying-glass.svg?react";
-import { api } from "../services/api";
-
 
 const categoryOptions = [
     { value: "food", label: "Alimentação" },
@@ -17,7 +18,9 @@ const categoryOptions = [
 
 export default function RefundDetails() {
     const { id } = useParams<{ id: string }>();
-    const { data: refund, isLoading } = useRefund(id || "");
+    const { refund, isLoading, deleteRefund } = useRefund(id || "");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     if (isLoading) {
         return (
@@ -54,15 +57,17 @@ export default function RefundDetails() {
         }
     }
 
-
-
     function handleDelete() {
-        if (refund?.id) {
-            // TODO: implementar exclusão
-            console.log("Excluir", refund.id);
-        }
+        setIsModalOpen(true);
     }
 
+    async function confirmDelete() {
+        if (refund?.id) {
+            setIsDeleting(true);
+            await deleteRefund(refund.id);
+            setIsDeleting(false);
+        }
+    }
 
     return (
         <div className="max-w-lg mx-auto">
@@ -112,6 +117,15 @@ export default function RefundDetails() {
                     </Button>
                 </div>
             </div>
+
+            <ConfirmModal
+                open={isModalOpen}
+                onOpenChange={setIsModalOpen}
+                title="Excluir solicitação"
+                description="Tem certeza que deseja excluir essa solicitação? Essa ação é irreversível."
+                onConfirm={confirmDelete}
+                isLoading={isDeleting}
+            />
         </div>
     );
 }

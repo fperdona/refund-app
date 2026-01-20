@@ -6,14 +6,15 @@ import SelectField from "../core-components/select-field";
 import Button from "../core-components/button";
 import CloudArrowUp from "../assets/icons/cloud-arrow-up.svg?react";
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
-import { createRefund } from "../services/refund";
+import { useRefund } from "../hooks/use-refund";
+
 
 
 export default function NewRefund() {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const { createRefund } = useRefund();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
 
   const {
@@ -33,14 +34,13 @@ export default function NewRefund() {
     try {
       setIsSubmitting(true);
       await createRefund(data);
-      navigate("/");
     } catch (error) {
       console.error("Erro ao criar reembolso:", error);
-      alert("Erro ao criar reembolso. Tente novamente.");
     } finally {
       setIsSubmitting(false);
     }
   }
+
 
 
   function handleFileClick() {
