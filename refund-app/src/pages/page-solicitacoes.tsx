@@ -37,10 +37,12 @@ export default function Solicitacoes() {
             {data.data.map((refund) => (
               <RefundItem
                 key={refund.id}
+                id={refund.id}
                 title={refund.title}
                 category={refund.category}
                 value={refund.value}
               />
+
             ))}
           </div>
 

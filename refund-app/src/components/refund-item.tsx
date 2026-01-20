@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import ForkKnife from "../assets/icons/fork-knife.svg?react";
 import Bed from "../assets/icons/bed.svg?react";
 import PoliceCar from "../assets/icons/police-car.svg?react";
@@ -13,12 +14,14 @@ const categoryConfig = {
 };
 
 interface RefundItemProps {
+  id: string;
   title: string;
   category: keyof typeof categoryConfig;
   value: number;
 }
 
 export default function RefundItem({
+  id,
   title,
   category,
   value,
@@ -31,7 +34,7 @@ export default function RefundItem({
   });
 
   return (
-    <div className="flex items-center justify-between py-3 hover:cursor-pointer">
+    <Link to={`/reembolso/${id}`} className="flex items-center justify-between py-3 hover:bg-gray-50 cursor-pointer">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center">
           <Icon className="w-5 h-5 fill-green-100" />
@@ -47,6 +50,6 @@ export default function RefundItem({
           {formattedValue.replace("R$", "").trim()}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
