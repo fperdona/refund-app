@@ -64,7 +64,7 @@ export function useRefund(id?: string) {
 
       queryClient.invalidateQueries({ queryKey: ["refunds"] });
       toast.success("Solicitação de reembolso criada com sucesso");
-      navigate("/");
+      navigate("/sucesso");
     } catch (error) {
       toast.error("Erro ao criar solicitação");
       throw error;
