@@ -4,6 +4,7 @@ import PageComponents from "./pages/page-components";
 import PageSolicitacoes from "./pages/page-solicitacoes";
 import PageNewRefund from "./pages/page-new-refund";
 import PageRefundDetails from "./pages/page-refund-details";
+import PageEditRefund from "./pages/page-edit-refund";
 import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import PageSuccess from "./pages/page-success";
 
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="sucesso" element={<PageSuccess />} />
 
             <Route path="reembolso/:id" element={<PageRefundDetails />} />
+            <Route path="reembolso/:id/editar" element={<PageEditRefund />} />
             <Route path="componentes" element={<PageComponents />} />
           </Route>
         </Routes>

@@ -33,6 +33,13 @@ interface CreateRefundData {
   file: File;
 }
 
+interface UpdateRefundData {
+  title: string;
+  category: string;
+  value: number;
+  date: string;
+}
+
 export function useRefund(id?: string) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -86,10 +93,30 @@ export function useRefund(id?: string) {
     }
   }
 
+  async function updateRefund(refundId: string, data: UpdateRefundData) {
+    try {
+      await api.put(`/refunds/${refundId}`, {
+        title: data.title,
+        category: data.category,
+        value: Math.round(data.value * 100),
+        date: data.date,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["refunds"] });
+      queryClient.invalidateQueries({ queryKey: ["refund", refundId] });
+      toast.success("Solicitação de reembolso atualizada com sucesso");
+      navigate(`/reembolso/${refundId}`);
+    } catch (error) {
+      toast.error("Erro ao atualizar solicitação");
+      throw error;
+    }
+  }
+
   return {
     refund: data,
     isLoading,
     createRefund,
     deleteRefund,
+    updateRefund,
   };
 }

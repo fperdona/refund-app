@@ -17,3 +17,14 @@ export const refundSchema = z.object({
 });
 
 export type RefundFormData = z.infer<typeof refundSchema>;
+
+export const refundEditSchema = z.object({
+  title: z.string().min(2, "Mínimo 2 caracteres"),
+  category: z.enum(["food", "hosting", "transport", "services", "other"], {
+    message: "Selecione uma categoria",
+  }),
+  value: z.number().positive("Valor deve ser maior que zero"),
+  date: z.string().min(1, "Selecione uma data"),
+});
+
+export type RefundEditFormData = z.infer<typeof refundEditSchema>;

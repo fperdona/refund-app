@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useRefund } from "../hooks/use-refund";
 import { api } from "../services/api";
 import InputText from "../core-components/input-text";
@@ -18,9 +18,14 @@ const categoryOptions = [
 
 export default function RefundDetails() {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
     const { refund, isLoading, deleteRefund } = useRefund(id || "");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    function handleEdit() {
+        navigate(`/reembolso/${id}/editar`);
+    }
 
     if (isLoading) {
         return (
@@ -92,6 +97,7 @@ export default function RefundDetails() {
                                 label="Categoria"
                                 options={categoryOptions}
                                 value={refund.category}
+                                disabled
                             />
                         </div>
 
@@ -110,17 +116,19 @@ export default function RefundDetails() {
                         readOnly
                     />
 
-                    <button
-                        onClick={handleOpenReceipt}
-                        className="flex items-center justify-center gap-2 text-green-100 hover:text-green-200 cursor-pointer py-2"
-                    >
-                        <MagnifyingGlass className="w-5 h-5 fill-current" />
-                        <span>Abrir comprovante</span>
-                    </button>
-
-                    <Button onClick={handleDelete}>
-                        Excluir
+                    <Button onClick={handleOpenReceipt} variant="secondary">
+                        <MagnifyingGlass className="w-5 h-5 mr-2 fill-green-100" />
+                        Abrir comprovante
                     </Button>
+
+                    <div className="flex gap-3">
+                        <Button onClick={handleEdit} className="flex-1">
+                            Editar
+                        </Button>
+                        <Button onClick={handleDelete} variant="danger" className="flex-1">
+                            Excluir
+                        </Button>
+                    </div>
                 </div>
             </div>
 
