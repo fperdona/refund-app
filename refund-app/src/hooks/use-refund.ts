@@ -16,6 +16,7 @@ interface Refund {
   title: string;
   category: "food" | "hosting" | "transport" | "services" | "other";
   value: number;
+  date: string | null;
   createdAt: string;
   receipt: Receipt;
 }
@@ -28,6 +29,7 @@ interface CreateRefundData {
   title: string;
   category: string;
   value: number;
+  date: string;
   file: File;
 }
 
@@ -59,6 +61,7 @@ export function useRefund(id?: string) {
         title: data.title,
         category: data.category,
         value: Math.round(data.value * 100),
+        date: data.date,
         receipt: receiptId,
       });
 

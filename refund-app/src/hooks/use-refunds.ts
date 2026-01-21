@@ -20,12 +20,22 @@ interface RefundsResponse {
   };
 }
 
-export function useRefunds(page = 1, search = "") {
+interface DateFilter {
+  startDate?: string;
+  endDate?: string;
+}
+
+export function useRefunds(page = 1, search = "", dateFilter?: DateFilter) {
   return useQuery({
-    queryKey: ["refunds", page, search],
+    queryKey: ["refunds", page, search, dateFilter?.startDate, dateFilter?.endDate],
     queryFn: async () => {
       const response = await api.get<RefundsResponse>("/refunds", {
-        params: { page, q: search || undefined },
+        params: {
+          page,
+          q: search || undefined,
+          startDate: dateFilter?.startDate || undefined,
+          endDate: dateFilter?.endDate || undefined,
+        },
       });
       return response.data.refunds;
     },

@@ -26,9 +26,10 @@ export default function RefundsSearch() {
   }
 
   return (
-    <div className="flex gap-2 mb-6">
+    <div className="flex gap-2 flex-1 items-end">
       <div className="flex-1">
         <InputText
+          label="Buscar"
           placeholder="Pesquisar pelo nome"
           value={inputValue}
           onChange={handleInputChange}

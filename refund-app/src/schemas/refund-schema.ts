@@ -6,6 +6,7 @@ export const refundSchema = z.object({
     message: "Selecione uma categoria",
   }),
   value: z.number().positive("Valor deve ser maior que zero"),
+  date: z.string().min(1, "Selecione uma data"),
   file: z
     .instanceof(File, { message: "Selecione um arquivo" })
     .refine((file) => file.size <= 2 * 1024 * 1024, "Arquivo deve ter no máximo 2MB")

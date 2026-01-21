@@ -1,21 +1,36 @@
 import { useQueryState } from "nuqs";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRefunds } from "../hooks/use-refunds";
 import RefundItem from "../components/refund-item";
 import Pagination from "../components/paginations";
 import RefundsSearch from "../components/refunds-search";
+import RefundsDateFilter from "../components/refunds-date-filter";
 import RefundItemSkeleton from "../components/refund-item-skeleton";
+
+interface DateFilter {
+  startDate: string;
+  endDate: string;
+}
 
 export default function Solicitacoes() {
   const [search] = useQueryState("q", { defaultValue: "" });
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useRefunds(page, search);
+  const [dateFilter, setDateFilter] = useState<DateFilter>({ startDate: "", endDate: "" });
+  const { data, isLoading } = useRefunds(page, search, dateFilter);
+
+  const handleDateFilterChange = useCallback((filter: DateFilter) => {
+    setDateFilter(filter);
+    setPage(1);
+  }, []);
 
   return (
     <div className="bg-white rounded-2xl p-8">
       <h1 className="text-xl font-bold text-gray-200 mb-6">Solicitações</h1>
 
-      <RefundsSearch />
+      <div className="flex flex-col md:flex-row gap-4 md:items-end mb-6">
+        <RefundsDateFilter onFilterChange={handleDateFilterChange} />
+        <RefundsSearch />
+      </div>
       {/* Loading */}
       {isLoading && (
         <div className="border-t border-gray-400 pt-5">

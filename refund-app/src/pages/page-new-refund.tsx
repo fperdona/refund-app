@@ -123,6 +123,19 @@ export default function NewRefund() {
           </div>
 
           <div>
+            <InputText
+              label="Data da despesa"
+              type="date"
+              {...register("date")}
+            />
+            {errors.date && (
+              <span className="text-red-500 text-sm mt-1 block">
+                {errors.date.message}
+              </span>
+            )}
+          </div>
+
+          <div>
             <label className="text-2xs font-semibold uppercase tracking-wide text-gray-200 block mb-2">
               Comprovante
             </label>

@@ -104,6 +104,12 @@ export default function RefundDetails() {
                         </div>
                     </div>
 
+                    <InputText
+                        label="Data da despesa"
+                        value={refund.date ? refund.date.split("-").reverse().join("/") : "-"}
+                        readOnly
+                    />
+
                     <button
                         onClick={handleOpenReceipt}
                         className="flex items-center justify-center gap-2 text-green-100 hover:text-green-200 cursor-pointer py-2"
