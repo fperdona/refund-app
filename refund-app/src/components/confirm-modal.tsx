@@ -30,19 +30,18 @@ export default function ConfirmModal({
                         {description}
                     </Dialog.Description>
 
-                    <div className="flex items-center justify-end gap-8 mt-6">
-                        <button
+                    <div className="flex gap-3 mt-6">
+                        <Button
                             onClick={() => onOpenChange(false)}
-                            className="text-green-100 hover:text-green-200 font-semibold cursor-pointer"
+                            variant="secondary"
                             disabled={isLoading}
+                            className="flex-1"
                         >
                             Cancelar
-                        </button>
-                        <div className="w-36">
-                            <Button onClick={onConfirm} disabled={isLoading}>
-                                {isLoading ? "Excluindo..." : "Confirmar"}
-                            </Button>
-                        </div>
+                        </Button>
+                        <Button onClick={onConfirm} disabled={isLoading} className="flex-1">
+                            {isLoading ? "Excluindo..." : "Confirmar"}
+                        </Button>
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>

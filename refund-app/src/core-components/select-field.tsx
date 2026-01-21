@@ -9,6 +9,7 @@ interface SelectFieldProps {
   options: { value: string; label: string }[];
   value?: string;
   onValueChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export default function SelectField({
@@ -17,6 +18,7 @@ export default function SelectField({
   options,
   value,
   onValueChange,
+  disabled = false,
 }: SelectFieldProps) {
   const [open, setOpen] = useState(false);
 
@@ -24,9 +26,8 @@ export default function SelectField({
     <div className="flex flex-col gap-2">
       {label && (
         <label
-          className={`text-2xs font-semibold uppercase tracking-wide ${
-            open ? "text-green-100" : "text-gray-200"
-          }`}
+          className={`text-2xs font-semibold uppercase tracking-wide ${open ? "text-green-100" : "text-gray-200"
+            }`}
         >
           {label}
         </label>
@@ -36,8 +37,12 @@ export default function SelectField({
         onValueChange={onValueChange}
         open={open}
         onOpenChange={setOpen}
+        disabled={disabled}
       >
-        <Select.Trigger className="group flex text-sm items-center justify-between h-12 px-4 border border-gray-300 rounded-lg bg-transparent text-gray-200 cursor-pointer data-[state=open]:border-green-100 outline-none">
+        <Select.Trigger
+          className={`group flex text-sm items-center justify-between h-12 px-4 border border-gray-300 rounded-lg bg-transparent text-gray-200 outline-none ${disabled ? "cursor-default" : "cursor-pointer data-[state=open]:border-green-100"
+            }`}
+        >
           <Select.Value placeholder={placeholder} />
           <Select.Icon>
             <CaretDown className="w-5 h-5 fill-gray-300 transition-transform group-data-[state=open]:rotate-180" />

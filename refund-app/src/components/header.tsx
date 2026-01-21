@@ -11,7 +11,7 @@ export default function Header() {
       </Link>
 
       <nav className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-        <NavLink href="/" active>
+        <NavLink href="/">
           Solicitações de reembolso
         </NavLink>
         <Link to="/novo" className="w-full md:w-40">

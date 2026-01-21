@@ -6,7 +6,7 @@ export const navLinkVariants = cva(
     variants: {
       active: {
         true: "text-green-100",
-        false: "text-gray-200 hover:text-green-100",
+        false: "text-green-100 hover:text-green-200",
       },
     },
     defaultVariants: {
@@ -17,7 +17,7 @@ export const navLinkVariants = cva(
 
 interface NavLinkProps
   extends VariantProps<typeof navLinkVariants>,
-    Omit<React.ComponentProps<"a">, "children"> {
+  Omit<React.ComponentProps<"a">, "children"> {
   children: string;
 }
 
