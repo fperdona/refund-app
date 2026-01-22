@@ -6,6 +6,7 @@ interface Refund {
   title: string;
   category: "food" | "hosting" | "transport" | "services" | "other";
   value: number;
+  date: string | null;
   created_at: string;
 }
 

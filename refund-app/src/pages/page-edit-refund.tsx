@@ -4,7 +4,8 @@ import { refundEditSchema, type RefundEditFormData } from "../schemas/refund-sch
 import InputText from "../core-components/input-text";
 import SelectField from "../core-components/select-field";
 import Button from "../core-components/button";
-import { useState } from "react";
+import CloudArrowUp from "../assets/icons/cloud-arrow-up.svg?react";
+import { useRef, useState } from "react";
 import { useRefund } from "../hooks/use-refund";
 import { useParams, useNavigate } from "react-router";
 
@@ -15,6 +16,7 @@ interface EditFormProps {
     category: "food" | "hosting" | "transport" | "services" | "other";
     value: number;
     date: string | null;
+    currentFileName: string;
   };
   onSubmit: (data: RefundEditFormData) => Promise<void>;
   onCancel: () => void;
@@ -22,10 +24,14 @@ interface EditFormProps {
 }
 
 function EditForm({ refund, onSubmit, onCancel, isSubmitting }: EditFormProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
     control,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<RefundEditFormData>({
     resolver: zodResolver(refundEditSchema),
@@ -36,6 +42,19 @@ function EditForm({ refund, onSubmit, onCancel, isSubmitting }: EditFormProps) {
       date: refund.date || "",
     },
   });
+
+  const selectedFile = watch("file");
+
+  function handleFileClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue("file", file, { shouldValidate: true });
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -109,6 +128,36 @@ function EditForm({ refund, onSubmit, onCancel, isSubmitting }: EditFormProps) {
         )}
       </div>
 
+      <div>
+        <label className="text-2xs font-semibold uppercase tracking-wide text-gray-200 block mb-2">
+          Comprovante
+        </label>
+        <div className="flex items-center border border-gray-300 rounded-lg h-12 pl-4">
+          <span className="text-sm text-gray-200 flex-1 truncate">
+            {selectedFile?.name || refund.currentFileName}
+          </span>
+          <button
+            type="button"
+            onClick={handleFileClick}
+            className="w-12 h-12 bg-green-100 hover:bg-green-200 rounded flex items-center justify-center cursor-pointer"
+          >
+            <CloudArrowUp className="w-4 h-4 fill-white" />
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".jpg,.jpeg,.png,.pdf"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+        </div>
+        {errors.file && (
+          <span className="text-red-500 text-sm mt-1 block">
+            {errors.file.message}
+          </span>
+        )}
+      </div>
+
       <div className="flex gap-3 mt-4">
         <Button type="button" onClick={onCancel} variant="secondary" className="flex-1">
           Cancelar
@@ -174,7 +223,10 @@ export default function EditRefund() {
         </p>
 
         <EditForm
-          refund={refund}
+          refund={{
+            ...refund,
+            currentFileName: refund.receipt?.originalFilename || "Sem comprovante",
+          }}
           onSubmit={handleSubmitForm}
           onCancel={handleCancel}
           isSubmitting={isSubmitting}

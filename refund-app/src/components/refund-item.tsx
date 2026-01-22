@@ -18,6 +18,7 @@ interface RefundItemProps {
   title: string;
   category: keyof typeof categoryConfig;
   value: number;
+  date: string | null;
 }
 
 export default function RefundItem({
@@ -25,6 +26,7 @@ export default function RefundItem({
   title,
   category,
   value,
+  date,
 }: RefundItemProps) {
   const { icon: Icon, label } = categoryConfig[category];
 
@@ -32,6 +34,10 @@ export default function RefundItem({
     style: "currency",
     currency: "BRL",
   });
+
+  const formattedDate = date
+    ? new Date(date + "T00:00:00").toLocaleDateString("pt-BR")
+    : null;
 
   return (
     <Link to={`/reembolso/${id}`} className="flex items-center justify-between py-3 hover:bg-gray-50 cursor-pointer">
@@ -45,10 +51,15 @@ export default function RefundItem({
         </div>
       </div>
       <div className="text-right">
-        <span className="text-xs text-gray-200">R$ </span>
-        <span className="text-sm font-semibold text-gray-100">
-          {formattedValue.replace("R$", "").trim()}
-        </span>
+        <div>
+          <span className="text-xs text-gray-200">R$ </span>
+          <span className="text-sm font-semibold text-gray-100">
+            {formattedValue.replace("R$", "").trim()}
+          </span>
+        </div>
+        {formattedDate && (
+          <p className="text-xs text-gray-200">{formattedDate}</p>
+        )}
       </div>
     </Link>
   );

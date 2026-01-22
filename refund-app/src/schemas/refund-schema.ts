@@ -25,6 +25,14 @@ export const refundEditSchema = z.object({
   }),
   value: z.number().positive("Valor deve ser maior que zero"),
   date: z.string().min(1, "Selecione uma data"),
+  file: z
+    .instanceof(File)
+    .refine((file) => file.size <= 2 * 1024 * 1024, "Arquivo deve ter no máximo 2MB")
+    .refine(
+      (file) => ["image/jpeg", "image/png", "application/pdf"].includes(file.type),
+      "Formato deve ser JPG, PNG ou PDF"
+    )
+    .optional(),
 });
 
 export type RefundEditFormData = z.infer<typeof refundEditSchema>;

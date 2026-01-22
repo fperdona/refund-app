@@ -33,19 +33,28 @@ export default function Solicitacoes() {
   }, []);
 
   const filteredData = useMemo(() => {
+    let result;
+
     if (!selectedCategory) {
-      return data?.data ?? [];
+      result = data?.data ?? [];
+    } else {
+      if (!statsData) return [];
+
+      result = statsData.refunds.filter((refund) => {
+        const matchesCategory = refund.category === selectedCategory;
+        const matchesSearch = !search || refund.title.toLowerCase().includes(search.toLowerCase());
+        const matchesStartDate = !dateFilter.startDate || (refund.date && refund.date >= dateFilter.startDate);
+        const matchesEndDate = !dateFilter.endDate || (refund.date && refund.date <= dateFilter.endDate);
+
+        return matchesCategory && matchesSearch && matchesStartDate && matchesEndDate;
+      });
     }
 
-    if (!statsData) return [];
-
-    return statsData.refunds.filter((refund) => {
-      const matchesCategory = refund.category === selectedCategory;
-      const matchesSearch = !search || refund.title.toLowerCase().includes(search.toLowerCase());
-      const matchesStartDate = !dateFilter.startDate || (refund.date && refund.date >= dateFilter.startDate);
-      const matchesEndDate = !dateFilter.endDate || (refund.date && refund.date <= dateFilter.endDate);
-
-      return matchesCategory && matchesSearch && matchesStartDate && matchesEndDate;
+    return [...result].sort((a, b) => {
+      if (!a.date && !b.date) return 0;
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      return b.date.localeCompare(a.date);
     });
   }, [selectedCategory, data, statsData, search, dateFilter]);
 
@@ -87,6 +96,7 @@ export default function Solicitacoes() {
                 title={refund.title}
                 category={refund.category}
                 value={refund.value}
+                date={refund.date}
               />
             ))}
           </div>

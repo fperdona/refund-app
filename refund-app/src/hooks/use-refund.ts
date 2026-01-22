@@ -38,6 +38,7 @@ interface UpdateRefundData {
   category: string;
   value: number;
   date: string;
+  file?: File;
 }
 
 export function useRefund(id?: string) {
@@ -95,15 +96,30 @@ export function useRefund(id?: string) {
 
   async function updateRefund(refundId: string, data: UpdateRefundData) {
     try {
+      let receiptId: string | undefined;
+
+      if (data.file) {
+        const formData = new FormData();
+        formData.append("receiptFile", data.file);
+
+        const receiptResponse = await api.post("/receipts", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        receiptId = receiptResponse.data.receipt.id;
+      }
+
       await api.put(`/refunds/${refundId}`, {
         title: data.title,
         category: data.category,
         value: Math.round(data.value * 100),
         date: data.date,
+        ...(receiptId && { receipt: receiptId }),
       });
 
       queryClient.invalidateQueries({ queryKey: ["refunds"] });
       queryClient.invalidateQueries({ queryKey: ["refund", refundId] });
+      queryClient.invalidateQueries({ queryKey: ["refund-stats"] });
       toast.success("Solicitação de reembolso atualizada com sucesso");
       navigate(`/reembolso/${refundId}`);
     } catch (error) {
